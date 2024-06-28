@@ -1,0 +1,7 @@
+**/__pycache__
+**/.DS_Store
+
+.idea
+
+.venv
+poetry.lock

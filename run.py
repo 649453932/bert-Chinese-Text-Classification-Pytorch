@@ -11,13 +11,23 @@ parser = argparse.ArgumentParser(description='Chinese Text Classification')
 parser.add_argument('--model', type=str, required=True, help='choose a model: Bert, ERNIE')
 args = parser.parse_args()
 
-
 if __name__ == '__main__':
     dataset = 'THUCNews'  # 数据集
 
     model_name = args.model  # bert
     x = import_module('models.' + model_name)
     config = x.Config(dataset)
+    device = torch.device('cpu')
+    if torch.backends.mps.is_available():
+        device = torch.device('mps')
+    else:
+        print(f"MPS 不可用")
+    if torch.cuda.is_available():
+        device = torch.device('cuda')
+    else:
+        print("CUDA 不可用")
+    print("Device: ", device)
+    config.device = device
     np.random.seed(1)
     torch.manual_seed(1)
     torch.cuda.manual_seed_all(1)
